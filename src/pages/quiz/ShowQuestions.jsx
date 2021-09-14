@@ -22,6 +22,7 @@ function ShowQuestions({
   answer,
   status,
 }) {
+  let inputFiledLength = [];
   let checkflag = false;
   const [currentQuestion, setCurrentQuestion] = useState(currentPage);
 
@@ -30,6 +31,7 @@ function ShowQuestions({
   }, [currentPage]);
 
   let isShowNumbering = size(questions) > 1;
+  let fieldNumber , fieldlenght = 0;
 
   return (
     <div>
@@ -40,7 +42,23 @@ function ShowQuestions({
             status === null ||
             parseInt(currentQuestion) === parseInt(question.page)
           ) {
-            const trimedString = question.prompt_content.replace(/(<|&lt;)br\s*\/*(>|&gt;)/g,' ');
+            question.prompt_content.replace(
+              /\[\[[^\]]*\]\]\*([\d]+)/g,
+              function replacer(matched) {
+                matched.replace(/\[\[[^\]]*\]\]/g, function replace(match) {
+                  fieldNumber = match.match(/\d+/)
+                 
+                });
+                matched.replace(/\*([\d]+)/g, function replacer(matched) {
+                  fieldlenght = matched.match(/\d+/)
+                });
+                inputFiledLength.push({fieldNumber :  fieldNumber[0], fieldlenght: fieldlenght[0]});
+              }
+            );
+            const trimedString = question.prompt_content.replace(
+              /(<|&lt;)br\s*\/*(>|&gt;)/g,
+              " "
+            );
             const converted = trimedString.replace(
               /\[\[[^\]]*\]\]/g,
               function replacer(matched) {
@@ -62,7 +80,7 @@ function ShowQuestions({
                     showNumbers={isShowNumbering}
                     counterClass="me-2"
                     counter={qai + 1 + "."}
-                    title={ReactHtmlParser(converted, {
+                    title={ReactHtmlParser(converted.replace(/\*([\d]+)/g,''), {
                       transform: (node) => {
                         if (node.name === "input") {
                           let user_answer = "";
@@ -106,10 +124,16 @@ function ShowQuestions({
                               }
                             );
                           }
+                          let inputLenght = 0;
+                          inputFiledLength.forEach((input_field_length)=>{
+                              if (node.attribs["data-id"] === input_field_length.fieldNumber) {
+                                inputLenght=input_field_length.fieldlenght;
+                              }
+                          });
                           return (
                             <div class="inline-grid icon-wrapper">
                               <InputFiled
-                                fieldLength={question.input_field_length}
+                                fieldLength={inputLenght === 0 ? question.input_field_length : inputLenght}
                                 disabled={isReview}
                                 data-question-type={question.type}
                                 data-value={node.attribs["data-id"]}
@@ -335,12 +359,12 @@ function ShowQuestions({
                                       : null
                                   }
                                   className={
-                                    (isReview &&
-                                      !isInUserSelectedAnswers(
-                                        question,
-                                        possible_answers.id
-                                      ) &&
-                                      possible_answers.is_correct)
+                                    isReview &&
+                                    !isInUserSelectedAnswers(
+                                      question,
+                                      possible_answers.id
+                                    ) &&
+                                    possible_answers.is_correct
                                       ? "form-check-input correct_answers ms-2"
                                       : "form-check-input ms-2"
                                   }
@@ -372,12 +396,12 @@ function ShowQuestions({
                                       : null
                                   }
                                   className={
-                                    (isReview &&
-                                      !isInUserSelectedAnswers(
-                                        question,
-                                        possible_answers.id
-                                      ) &&
-                                      possible_answers.is_correct)
+                                    isReview &&
+                                    !isInUserSelectedAnswers(
+                                      question,
+                                      possible_answers.id
+                                    ) &&
+                                    possible_answers.is_correct
                                       ? "form-check-input correct_answers ms-2"
                                       : "form-check-input ms-2"
                                   }
@@ -435,11 +459,11 @@ function ShowQuestions({
                                   ) && (
                                     <WrongAnswer class="answer-badge bg-danger" />
                                   )}
-                                {((question.type === "CheckBox" ||
+                                {(question.type === "CheckBox" ||
                                   question.type === "RadioBox") &&
-                                  isReview &&
-                                  size(question.user_selected) === 0 &&
-                                  possible_answers.is_correct) ? (
+                                isReview &&
+                                size(question.user_selected) === 0 &&
+                                possible_answers.is_correct ? (
                                   <WrongAnswer class="answer-badge bg-danger" />
                                 ) : null}
                               </div>
