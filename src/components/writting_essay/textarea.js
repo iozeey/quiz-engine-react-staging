@@ -9,7 +9,7 @@ export function TextArea({value , onchange  ,...restprops}) {
       value={value}
       spellcheck="false"
       data-gramm="false"
-      placeholder="start writting Here...."
+      placeholder="Start writing here..."
       onChange={onchange}
       {...restprops}
     ></textarea>
