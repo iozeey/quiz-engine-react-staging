@@ -52,7 +52,7 @@ function ShowQuestions({
                 matched.replace(/\*([\d]+)/g, function replacer(matched) {
                   fieldlenght = matched.match(/\d+/)
                 });
-                inputFiledLength.push({fieldNumber :  fieldNumber[0], fieldlenght: fieldlenght[0]});
+                inputFiledLength.push({questionNumber : question.id,fieldNumber :  fieldNumber[0], fieldlenght: fieldlenght[0]});
               }
             );
             const trimedString = question.prompt_content.replace(
@@ -126,7 +126,7 @@ function ShowQuestions({
                           }
                           let inputLenght = 0;
                           inputFiledLength.forEach((input_field_length)=>{
-                              if (node.attribs["data-id"] === input_field_length.fieldNumber) {
+                              if (node.attribs["data-id"] === input_field_length.fieldNumber && input_field_length.questionNumber === question.id ) {
                                 inputLenght=input_field_length.fieldlenght;
                               }
                           });
@@ -280,7 +280,7 @@ function ShowQuestions({
                     <div
                       className={
                         question.question_horizontal_display
-                          ? "d-inline-flex  align-items-end "
+                          ? "row d-inline-flex  align-items-end "
                           : null
                       }
                     >
@@ -291,7 +291,7 @@ function ShowQuestions({
                               question.type === "RadioBox" ||
                               question.type === "CheckBox"
                                 ? question.question_horizontal_display
-                                  ? "d-flex mt-2 ms-3 inline-grid"
+                                  ? "d-flex mt-2 ms-3 inline-grid col"
                                   : "d-flex mt-2 ms-3"
                                 : null
                             }

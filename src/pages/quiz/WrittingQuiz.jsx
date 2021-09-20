@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Col, Row } from "reactstrap";
+import { Col, Row  } from "reactstrap";
+import ConfirmationModal from "../../components/modals/ConfirmationModal";
 import get from "lodash/get";
 import { baseUrl } from "../../libs/env";
 import { Exitbtn } from "../../components/buttons/exitbtn";
@@ -35,6 +36,8 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
       toastId: 1,
     });
 
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
   const [isOpenAdditionalResourceModal, setOpenAdditionalResourceModal] =
     useState(false);
   const additionalResourceToggle = () =>
@@ -88,6 +91,7 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
     setIsStopTimer(true);
     onSubmit(quiz_data);
     setIsStopTimer(false);
+    toggle()
   };
   const creatQuizDataAndSave = () => {
     if (!isReview) {
@@ -136,7 +140,7 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
         }
       );
     } else {
-      creatQuizDataAndSubmit();
+      setModal(!modal);
     }
   };
 
@@ -312,6 +316,11 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
           </div>
         </form>
       </div>
+      <ConfirmationModal
+          isOpen={modal}
+          toggle={toggle}
+          onClick={creatQuizDataAndSubmit}
+        />
     </div>
   );
 };

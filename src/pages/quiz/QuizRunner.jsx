@@ -22,6 +22,7 @@ import { ExerciseType } from "./../../components/heading/heading";
 import SimpleModal from "./../../components/modals/SimpleModal";
 import { includes } from "lodash";
 import { join } from "lodash";
+import ConfirmationModal from "../../components/modals/ConfirmationModal";
 import { notify } from "../../components/notification/Notification";
 import QuestionDescription from "../../components/question/QuestionDescrption";
 import { QuestionHeading } from "./../../components/question/question_heading";
@@ -543,28 +544,11 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
             </button>
           </ModalFooter>
         </Modal>
-        <Modal
+        <ConfirmationModal
           isOpen={saveModal}
-          size="lg"
           toggle={saveToggle}
-          className="modal-dialog-centered "
-        >
-          <ModalBody>
-            <h4 className="text-primary">
-              <strong>Are you sure!</strong>
-            </h4>
-            <p>After submitting your work, you cannot making any changes.</p>
-          </ModalBody>
-          <ModalFooter style={{ border: 0 }}>
-            <button
-              type="submit"
-              class="btn btn-sm mx-3 modal-button"
-              onClick={creatQuizDataAndSubmit}
-            >
-              Submit
-            </button>
-          </ModalFooter>
-        </Modal>
+          onClick={creatQuizDataAndSubmit}
+        />
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ export function InputFiled({fieldLength, value, name, onblur, ...restProps }) {
         type="text"
         name={name}
         value={value}
+        size={fieldLength}
         maxLength={fieldLength}
         onBlur={onblur}
         autoComplete="off"

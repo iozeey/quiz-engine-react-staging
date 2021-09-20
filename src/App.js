@@ -8,6 +8,7 @@ import QuizSubmit from "./components/true_false_questions/QuizSubmit";
 import QuizRunner from "./pages/quiz/QuizRunner";
 import quizAPI from "./libs/api/quiz";
 import { baseUrl } from "./libs/env";
+import Error from "./erros/Error";
 import { isLocalHosted } from "./libs/env";
 import { useHistory } from "react-router-dom";
 
@@ -64,7 +65,7 @@ const App = (props) => {
             isLoaded={isLoaded}
             onSubmit={submitQuiz}
           />
-        ) : (
+        ) : items.detail ? <Error data={items} isLoaded={isLoaded} /> :(
           <QuizRunner data={items} isLoaded={isLoaded} onSubmit={submitQuiz} />
         )}
       </Route>
