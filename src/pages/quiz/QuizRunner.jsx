@@ -323,6 +323,20 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                 </span>
               </Col>
             </Row>
+            <Row>
+              {data && isReview ? (
+                <Col md className="mt-3 text-end">
+                  <span className="p-1 score-content">
+                    <b>
+                      <div className="inline">
+                        Score: { Math.floor(data.user_score)} / 100 points (
+                        {Math.floor((data.user_score / 100) * 100)}%)
+                      </div>
+                    </b>
+                  </span>
+                </Col>
+              ) : null}
+            </Row>
             <div className="p-md-5">
               <div>
                 <div
@@ -360,12 +374,13 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                 <Row className="border border-light p-3">
                   <Col>
                     <div class="d-flex flex-column">
-                      <QuestionHeading
-                        question={
-                          data.prompt_content
-                        }
-                      />
-                      {data.audio ? <div className="mb-3"> <AudioPlayer src={data.audio}/> </div> :null }
+                      <QuestionHeading question={data.prompt_content} />
+                      {data.audio ? (
+                        <div className="mb-3">
+                          {" "}
+                          <AudioPlayer src={data.audio} />{" "}
+                        </div>
+                      ) : null}
                       {data.html_content && (
                         <QuestionDescription
                           description={
