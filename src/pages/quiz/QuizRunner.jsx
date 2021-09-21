@@ -323,20 +323,6 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                 </span>
               </Col>
             </Row>
-            <Row>
-              {data && isReview ? (
-                <Col md className="mt-3 text-end">
-                  <span className="p-1 score-content">
-                    <b>
-                      <div className="inline">
-                        Score: { Math.floor(data.user_score)} / 100 points (
-                        {Math.floor((data.user_score / 100) * 100)}%)
-                      </div>
-                    </b>
-                  </span>
-                </Col>
-              ) : null}
-            </Row>
             <div className="p-md-5">
               <div>
                 <div
@@ -492,10 +478,25 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                       </div>
                     )}
                     {isReview || data.status === null ? (
-                      <div class="inline float-end">
+                        <div className="row">
+                        {data && isReview ? (
+                          <div md className="mt-3 text-end col-8">
+                            <span className="p-1 score-content">
+                              <b>
+                                <div className="inline">
+                                  Score: { Math.floor(data.user_score)} / 100 points (
+                                  {Math.floor((data.user_score / 100) * 100)}%)
+                                </div>
+                              </b>
+                            </span>
+                          </div>
+                        ) : null}
+                        <div className="text-end col-4">
                         {/* <Exitbtn href="https://staging.gradingly.com/" /> */}
                         <Exitbtn href={baseUrl} />
                       </div>
+                      </div>
+                      
                     ) : (
                       <div class="inline float-end">
                         <span className="mx-1">
