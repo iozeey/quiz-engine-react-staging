@@ -1,8 +1,8 @@
 import { getBaseApiUrl } from "./../env";
 import BaseAPI from "./baseAPI";
-const getExerciseid = window.location.pathname.split("/")[3];
+export const  getStudentid = window.location.pathname.split("/")[3];
    
-const getQuizUrl = (quiz_id) => `${getBaseApiUrl()}/quiz/${quiz_id}/?id=${getExerciseid}`;
+const getQuizUrl = (quiz_id) => `${getBaseApiUrl()}/quiz/${quiz_id}/?id=${getStudentid}`;
 
 class API extends BaseAPI {
   constructor(props) {

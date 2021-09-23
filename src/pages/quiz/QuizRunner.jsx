@@ -22,6 +22,7 @@ import { ExerciseType } from "./../../components/heading/heading";
 import SimpleModal from "./../../components/modals/SimpleModal";
 import { includes } from "lodash";
 import { join } from "lodash";
+import { getStudentid } from "../../libs/api/quiz";
 import ConfirmationModal from "../../components/modals/ConfirmationModal";
 import { notify } from "../../components/notification/Notification";
 import QuestionDescription from "../../components/question/QuestionDescrption";
@@ -479,8 +480,9 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                     )}
                     {isReview || data.status === null ? (
                         <div className="row">
+                        <div className="col-8">
                         {data && isReview ? (
-                          <div md className="mt-3 text-end col-8">
+                          <div md className="mt-3 text-end">
                             <span className="p-1 score-content">
                               <b>
                                 <div className="inline">
@@ -491,9 +493,9 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                             </span>
                           </div>
                         ) : null}
+                        </div>
                         <div className="text-end col-4">
-                        {/* <Exitbtn href="https://staging.gradingly.com/" /> */}
-                        <Exitbtn href={baseUrl} />
+                        <Exitbtn href={getStudentid ? `${baseUrl}/school/school_quiz_grading/${getStudentid}` : "javascript:window.close()"} />
                       </div>
                       </div>
                       
