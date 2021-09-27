@@ -333,3 +333,27 @@ select {
   background: white !important;
   border-radius: 10px;
 }
+.text-primary, .btn-link{
+  color: #2f56a1 !important;
+  text-decoration: none;
+}
+.btn-primary,  .badge-primary, .bg-primary,
+.custom-control-input:checked ~ .custom-control-label::before{
+  background-color: #2f56a1 !important;
+  color: #fff;
+  border-color: #2f56a1;
+}
+.colorGood {
+  fill: #02b56b;
+}
+
+.colorModerate {
+  fill: #ed9e04;
+}
+
+.colorBad {
+  fill: #ee3b3b;
+}
+.colorNew {
+  fill: #f6f6f6;
+}

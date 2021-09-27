@@ -28,6 +28,7 @@ import { notify } from "../../components/notification/Notification";
 import QuestionDescription from "../../components/question/QuestionDescrption";
 import { QuestionHeading } from "./../../components/question/question_heading";
 import { Timer } from "./../../components/timer/timer";
+import { Speaking } from "./speaking";
 import ShowQuestions from "./ShowQuestions";
 
 let answers = [];
@@ -38,6 +39,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
   }
 
   const [modal, setModal] = useState(false);
+  const [speakingUrl , setSpeakingUrl] = useState("");
   let [showWarning, setShowWarnings] = useState();
   const [notAnsweredQuestion, setNotAnsweredQuestions] = useState("");
   const toggle = () => setModal(!modal);
@@ -91,6 +93,9 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
   };
   const creatQuizDataAndSubmit = () => {
     const timer = window.sessionStorage.getItem("timer");
+    if (speakingUrl !== "") {
+      answers=speakingUrl
+    }
     let quiz_data = {
       is_submit: true,
       time_spent: parseInt(timer),
@@ -244,6 +249,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
   const { handleSubmit } = useForm();
 
   const onFormSubmit = () => {
+    console.log(speakingUrl);
     let answeredQuestion = [];
     let notAnswered = [];
     let ans = [];
@@ -429,6 +435,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                   />
                 </Row>
                 <Row className="border border-light p-3">
+                  { data.task_type === "Speaking Task" ? <Speaking speakingUrl={setSpeakingUrl}/> :
                   <div className="d-flex">
                     <ShowQuestions
                       questions={questions}
@@ -439,6 +446,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                       status={data.status}
                     />
                   </div>
+                }
                 </Row>
                 {
                   isReview || data.total_pages === 1 ? null : ""
@@ -474,8 +482,11 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                   <div class="mb-3 mt-3 p-0 m-0">
                     {isReview || data.status === null ? null : (
                       <div class="inline float-start">
+                        {data.task_type !== "Speaking Task"? <>
                         <Savebtn click={creatQuizDataAndSave} />
                         <ToastContainer />
+                        </>:null
+                          }
                       </div>
                     )}
                     {isReview || data.status === null ? (
@@ -495,7 +506,12 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                         ) : null}
                         </div>
                         <div className="text-end col-4">
-                        <Exitbtn href={getStudentid ? `${baseUrl}/school/school_quiz_grading/${getStudentid}` : "javascript:window.close()"} />
+                          {getStudentid ?
+                        <Exitbtn href={`${baseUrl}/school/school_quiz_grading/${getStudentid}`} />
+                        : 
+                        <Exitbtn onClick={(e) => { e.preventDefault(); window.close() }} />
+
+                          }
                       </div>
                       </div>
                       
