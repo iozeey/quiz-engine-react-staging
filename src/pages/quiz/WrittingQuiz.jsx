@@ -18,6 +18,7 @@ import SimpleModal from "./../../components/modals/SimpleModal";
 import QuestionDescription from "./../../components/question/QuestionDescrption";
 import { QuestionHeading } from "./../../components/question/question_heading";
 import { Timer } from "./../../components/timer/timer";
+import { getStudentid } from "../../libs/api/quiz";
 import SuggestedWords from "./../../components/badges/SuggestedWords";
 import { TextArea } from "./../../components/writting_essay/textarea";
 import { size } from "lodash";
@@ -301,8 +302,29 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                       </div>
                     )}
                     {isReview || data.status === null ? (
-                      <div class="inline float-end">
-                        <Exitbtn href={baseUrl} />
+                        <div className="row">
+                        <div className="col-8">
+                        {data && isReview ? (
+                          <div md className="mt-3 text-end">
+                            <span className="p-1 score-content">
+                              <b>
+                                <div className="inline">
+                                  Score: { Math.floor(data.user_score)} / 100 points (
+                                  {Math.floor((data.user_score / 100) * 100)}%)
+                                </div>
+                              </b>
+                            </span>
+                          </div>
+                        ) : null}
+                        </div>
+                        <div className="text-end col-4">
+                          {getStudentid ?
+                        <Exitbtn href={`${baseUrl}/school/school_quiz_grading/${getStudentid}`} />
+                        : 
+                        <Exitbtn onClick={(e) => { e.preventDefault(); window.close() }} />
+
+                          }
+                      </div>
                       </div>
                     ) : (
                       <div class="inline float-end">
