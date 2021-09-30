@@ -357,3 +357,13 @@ select {
 .colorNew {
   fill: #f6f6f6;
 }
+.h-w-100{
+height: 100px;
+width: 100px;
+}
+.centered{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -39,7 +39,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
   }
 
   const [modal, setModal] = useState(false);
-  const [speakingUrl , setSpeakingUrl] = useState("");
+  const [speakingUrl, setSpeakingUrl] = useState("");
   let [showWarning, setShowWarnings] = useState();
   const [notAnsweredQuestion, setNotAnsweredQuestions] = useState("");
   const toggle = () => setModal(!modal);
@@ -94,7 +94,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
   const creatQuizDataAndSubmit = () => {
     const timer = window.sessionStorage.getItem("timer");
     if (speakingUrl !== "") {
-      answers=speakingUrl
+      answers = speakingUrl;
     }
     let quiz_data = {
       is_submit: true,
@@ -111,7 +111,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
     }
   };
   const creatQuizDataAndSave = () => {
-    if (data.status !== null) {
+    if (data.user_type === "School Student") {
       const timer = window.sessionStorage.getItem("timer");
       let quiz_data = {
         is_submit: false,
@@ -127,7 +127,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
   };
 
   useEffect(() => {
-    if (isReview !== undefined || data.status !== null) {
+    if (isReview === undefined && data.user_type === "School Student") {
       window.addEventListener("beforeunload", alertUser);
       return () => {
         window.removeEventListener("beforeunload", alertUser);
@@ -299,7 +299,11 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
     }
   };
   if (!isLoaded)
-    return <h1 className="text-primary text-center">Loading...</h1>;
+    return (
+      <div class="centered  text-light fs-4">
+        <div class="spinner-border h-w-100" role="status"></div>
+      </div>
+    );
   return (
     <div className="dashboard-wrapper bg-white m-27">
       <div class="container quiz-background">
@@ -315,7 +319,9 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                     {data && timer && (
                       <Timer
                         isStopTimer={
-                          data.status === null || isReview ? true : isStopTimer
+                          data.user_type !== "School Student" || isReview
+                            ? true
+                            : isStopTimer
                         }
                         totalTimeInSeconds={data.recom_time}
                         localSpentTime={timer}
@@ -435,18 +441,20 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                   />
                 </Row>
                 <Row className="border border-light p-3">
-                  { data.task_type === "Speaking Task" ? <Speaking speakingUrl={setSpeakingUrl}/> :
-                  <div className="d-flex">
-                    <ShowQuestions
-                      questions={questions}
-                      currentPage={currentPage}
-                      onAnswer={onblur}
-                      isReview={isReview}
-                      answer={answers}
-                      status={data.status}
-                    />
-                  </div>
-                }
+                  {data.task_type === "Speaking Task" ? (
+                    <Speaking speakingUrl={setSpeakingUrl} />
+                  ) : (
+                    <div className="d-flex">
+                      <ShowQuestions
+                        questions={questions}
+                        currentPage={currentPage}
+                        onAnswer={onblur}
+                        isReview={isReview}
+                        answer={answers}
+                        status={data.status}
+                      />
+                    </div>
+                  )}
                 </Row>
                 {
                   isReview || data.total_pages === 1 ? null : ""
@@ -480,41 +488,52 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
 
                 <Row>
                   <div class="mb-3 mt-3 p-0 m-0">
-                    {isReview || data.status === null ? null : (
+                    {isReview || data.user_type !== "School Student" ? null : (
                       <div class="inline float-start">
-                        {data.task_type !== "Speaking Task"? <>
-                        <Savebtn click={creatQuizDataAndSave} />
-                        <ToastContainer />
-                        </>:null
-                          }
+                        {data.task_type !== "Speaking Task" ? (
+                          <>
+                            <Savebtn click={creatQuizDataAndSave} />
+                            <ToastContainer />
+                          </>
+                        ) : null}
                       </div>
                     )}
-                    {isReview || data.status === null ? (
-                        <div className="row">
+                    {isReview ||
+                    (data.user_type === "School Student" &&
+                      data.completed_at) ||
+                    data.user_type === "School Account" ? (
+                      <div className="row">
                         <div className="col-8">
-                        {data && isReview ? (
-                          <div md className="mt-3 text-end">
-                            <span className="p-1 score-content">
-                              <b>
-                                <div className="inline">
-                                  Score: { Math.floor(data.user_score)} / 100 points (
-                                  {Math.floor((data.user_score / 100) * 100)}%)
-                                </div>
-                              </b>
-                            </span>
-                          </div>
-                        ) : null}
+                          {data.user_score !== null && isReview ? (
+                            <div md className="mt-3 text-end">
+                              <span className="p-1 score-content">
+                                <b>
+                                  <div className="inline">
+                                    Score: {Math.floor(data.user_score)} / 100
+                                    points (
+                                    {Math.floor((data.user_score / 100) * 100)}
+                                    %)
+                                  </div>
+                                </b>
+                              </span>
+                            </div>
+                          ) : null}
                         </div>
                         <div className="text-end col-4">
-                          {getStudentid ?
-                        <Exitbtn href={`${baseUrl}/school/school_quiz_grading/${getStudentid}`} />
-                        : 
-                        <Exitbtn onClick={(e) => { e.preventDefault(); window.close() }} />
-
-                          }
+                          {getStudentid ? (
+                            <Exitbtn
+                              href={`${baseUrl}/school/school_quiz_grading/${getStudentid}`}
+                            />
+                          ) : (
+                            <Exitbtn
+                              onClick={(e) => {
+                                e.preventDefault();
+                                window.close();
+                              }}
+                            />
+                          )}
+                        </div>
                       </div>
-                      </div>
-                      
                     ) : (
                       <div class="inline float-end">
                         <span className="mx-1">
