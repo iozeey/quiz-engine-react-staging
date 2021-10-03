@@ -30,6 +30,7 @@ import { QuestionHeading } from "./../../components/question/question_heading";
 import { Timer } from "./../../components/timer/timer";
 import { Speaking } from "./speaking";
 import ShowQuestions from "./ShowQuestions";
+// import { DragDrop } from "./DragDrop";
 
 let answers = [];
 
@@ -441,20 +442,19 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                   />
                 </Row>
                 <Row className="border border-light p-3">
-                  {data.task_type === "Speaking Task" ? (
-                    <Speaking speakingUrl={setSpeakingUrl} />
-                  ) : (
-                    <div className="d-flex">
-                      <ShowQuestions
-                        questions={questions}
-                        currentPage={currentPage}
-                        onAnswer={onblur}
-                        isReview={isReview}
-                        answer={answers}
-                        status={data.status}
-                      />
-                    </div>
-                  )}
+                  { data.task_type === "Speaking Task" ? <Speaking speakingUrl={setSpeakingUrl}/> :
+                  <div className="d-flex">
+                    <ShowQuestions
+                      questions={questions}
+                      currentPage={currentPage}
+                      onAnswer={onblur}
+                      isReview={isReview}
+                      answer={answers}
+                      status={data.status}
+                    />
+                     {/* <DragDrop/> */}
+                  </div>
+                }
                 </Row>
                 {
                   isReview || data.total_pages === 1 ? null : ""

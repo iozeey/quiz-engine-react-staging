@@ -96,9 +96,10 @@
 .dotted-border {
   border: 1px #2f56a1 solid;
   border-style: dashed;
-  padding-left: 20px;
-  padding-right: 20px;
   border-radius: 5px;
+}
+.border-primary{
+  border: 1px #2f56a1 solid !important;
 }
 
 .right {
@@ -356,6 +357,20 @@ select {
 }
 .colorNew {
   fill: #f6f6f6;
+}
+.parent_box{
+  height: 400px !important;
+  width: 153px !important;
+}
+[data-drop-target] {
+  height: 28px;
+  width: 153px;
+  background-color: gainsboro;
+  float: left;
+}
+div:empty:before {
+  content:attr(data-placeholder);
+  color:gray
 }
 .h-w-100{
 height: 100px;

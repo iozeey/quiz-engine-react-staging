@@ -305,16 +305,17 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                         <div className="row">
                         <div className="col-8">
                         {data && isReview ? (
-                          <div md className="mt-3 text-end">
-                            <span className="p-1 score-content">
-                              <b>
-                                <div className="inline">
-                                  Score: { Math.floor(data.user_score)} / 100 points (
-                                  {Math.floor((data.user_score / 100) * 100)}%)
-                                </div>
-                              </b>
-                            </span>
-                          </div>
+                          null
+                          // <div md className="mt-3 text-end">
+                          //   <span className="p-1 score-content">
+                          //     <b>
+                          //       <div className="inline">
+                          //         Score: { Math.floor(data.user_score)} / 100 points (
+                          //         {Math.floor((data.user_score / 100) * 100)}%)
+                          //       </div>
+                          //     </b>
+                          //   </span>
+                          // </div>
                         ) : null}
                         </div>
                         <div className="text-end col-4">

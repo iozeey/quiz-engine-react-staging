@@ -141,6 +141,7 @@ function ShowQuestions({
                                 value={isReview ? given_answer : null}
                                 defaultValue={user_answer ? user_answer : null}
                                 onblur={onAnswer}
+                                maxLength={question.input_field_characters_limit}
                                 className={
                                   corrent_answer === given_answer
                                     ? "form-control-sm form-control-custom-sm"

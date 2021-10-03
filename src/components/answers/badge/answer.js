@@ -1,6 +1,6 @@
 import React from "react";
-export function Answer(props){
+export function Answer({badgeclass , value, ...restprops}){
     return(
-        <span class={props.class }>{props.value}</span>
-    )
+        <span {...restprops} className={badgeclass}>{value}</span>
+    );
 }

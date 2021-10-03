@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import { Col, Container, Row } from "reactstrap";
 import { Header } from "../header/header";
 import { Timer } from "../timer/timer";
