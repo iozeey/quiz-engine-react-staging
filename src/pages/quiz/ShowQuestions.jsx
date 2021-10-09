@@ -80,6 +80,7 @@ function ShowQuestions({
                     showNumbers={isShowNumbering}
                     counterClass="me-2"
                     counter={qai + 1 + "."}
+                    alignement = {question.question_alignment}
                     title={ReactHtmlParser(converted.replace(/\*([\d]+)/g,''), {
                       transform: (node) => {
                         if (node.name === "input") {
