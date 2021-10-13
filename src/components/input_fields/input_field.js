@@ -9,6 +9,7 @@ export function InputFiled({fieldLength, maxLength, value, name, onblur, ...rest
         size={fieldLength}
         maxLength={maxLength}
         onBlur={onblur}
+        spellcheck="false"
         autoComplete="off"
         class="form-control-sm form-control-custom-sm"
         style={{ borderColor: "#2f56a1" }}

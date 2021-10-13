@@ -461,13 +461,6 @@ function ShowQuestions({
                                   ) && (
                                     <WrongAnswer class="answer-badge bg-danger" />
                                   )}
-                                {(question.type === "CheckBox" ||
-                                  question.type === "RadioBox") &&
-                                isReview &&
-                                size(question.user_selected) === 0 &&
-                                possible_answers.is_correct ? (
-                                  <WrongAnswer class="answer-badge bg-danger" />
-                                ) : null}
                               </div>
                             </div>
                           </div>
