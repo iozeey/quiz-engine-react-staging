@@ -392,3 +392,6 @@ width: 100px;
 .drag-drop-answer-batch{
   right: -3px !important;
 }
+.audio-react-recorder__canvas{
+  display: none !important;
+}

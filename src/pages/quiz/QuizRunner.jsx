@@ -450,7 +450,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                   />
                 </Row>
                 <Row className="border border-light p-3">
-                  { data.task_type === "Speaking Task" ? <Speaking speakingUrl={setSpeakingUrl}/> :
+                  { data.task_type === "Speaking Task" ? <Speaking speakingUrl={setSpeakingUrl} speaking_data={data.speaking_plain_text_for_ml} /> :
                   <div className="d-flex">
                     <ShowQuestions
                       questions={questions}

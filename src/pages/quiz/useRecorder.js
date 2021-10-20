@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 const useRecorder = () => {
+  const [base64, setBase] = useState("");
   const [audioURL, setAudioURL] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [recorder, setRecorder] = useState(null);
@@ -20,12 +21,19 @@ const useRecorder = () => {
     }
 
     const handleData = e => {
-      setAudioURL(URL.createObjectURL(e.data));
+     let blob = new Blob([e.data], { type : 'audio/wav' });
+     var reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = function () {
+     var base64data = reader.result;
+     setBase(base64data);
+    };
+      setAudioURL(URL.createObjectURL(blob));
     };
 
     recorder.addEventListener("dataavailable", handleData);
     return () => recorder.removeEventListener("dataavailable", handleData);
-  }, [recorder, isRecording]);
+  }, [recorder, isRecording]);  
 
   const startRecording = () => {
     setIsRecording(true);
@@ -35,7 +43,7 @@ const useRecorder = () => {
     setIsRecording(false);
   };
 
-  return [audioURL, isRecording, startRecording, stopRecording];
+  return [base64 ,audioURL, isRecording, startRecording, stopRecording];
 };
 
 async function requestRecorder() {

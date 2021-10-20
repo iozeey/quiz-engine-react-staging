@@ -1,9 +1,9 @@
 import * as React from "react";
 import useRecorder from "./useRecorder";
 
-export const Speaking = ({ speakingUrl }) => {
-  let [audioURL, isRecording, startRecording, stopRecording] = useRecorder();
-  speakingUrl(audioURL);
+export const Speaking = ({ speakingUrl,speaking_data }) => {
+  let [base64,audioURL, isRecording, startRecording, stopRecording] = useRecorder();
+  speakingUrl(base64);
   return (
     <div className="row">
       <div className="col-12 mb-3">
@@ -34,8 +34,11 @@ export const Speaking = ({ speakingUrl }) => {
           </div>
         </button>
       </div>
-      <div className="col-12">
+      <div className="col-12 mb-3">
         <audio src={audioURL} controls controlsList="nodownload" />
+      </div>
+      <div className="col-12">
+        {speaking_data}
       </div>
     </div>
   );
