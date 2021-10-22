@@ -36,7 +36,7 @@ import ShowQuestions from "./ShowQuestions";
 
 let answers = [];
 
-const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
+const QuizRunner = ({ isLoaded, data, onSubmit, isReview,isSubmitting }) => {
   if (data.completed_at != null) {
     isReview = true;
   }
@@ -501,7 +501,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                       <div class="inline float-start">
                         {data.task_type !== "Speaking Task" ? (
                           <>
-                            <Savebtn click={creatQuizDataAndSave} />
+                            <Savebtn click={creatQuizDataAndSave} disabled={isSubmitting} />
                             <ToastContainer />
                           </>
                         ) : null}
@@ -595,7 +595,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                           )}
                         </span>
                         <span>
-                          {currentPage === data.total_pages && <SubmitButton />}
+                          {currentPage === data.total_pages && <SubmitButton disabled={isSubmitting}/>}
                         </span>
                         <span>
                           {currentPage !== data.total_pages && (

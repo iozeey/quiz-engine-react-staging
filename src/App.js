@@ -16,6 +16,7 @@ const App = (props) => {
   let  RoutePath=`/:id/:token`;
   const [items, setItems] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const getQuizId = () => window.location.pathname.split("/")[1];
   let history = useHistory();
   if (isLocalHosted === false) {
@@ -35,11 +36,14 @@ const App = (props) => {
 
   const submitQuiz = useCallback(
     (data) => {
+      setIsSubmitting(true);
       if (data.is_submit) {
+       
         quizAPI
           .post({ id: getQuizId(), data })
           .then((res) => res.json())
           .then((json) => {
+            setIsSubmitting(false);
             setIsLoaded(true);
             setItems(json);
             if (json.is_show_feedback === false) {
@@ -47,7 +51,8 @@ const App = (props) => {
             }
           });
       } else {
-        quizAPI.post({ id: getQuizId(), data });
+        quizAPI.post({ id: getQuizId(), data })
+        .then ((res) => setIsSubmitting(false))
       }
     },
     [history]
@@ -66,7 +71,7 @@ const App = (props) => {
             onSubmit={submitQuiz}
           />
         ) : items.detail ? <Error data={items} isLoaded={isLoaded} /> :(
-          <QuizRunner data={items} isLoaded={isLoaded} onSubmit={submitQuiz} />
+          <QuizRunner data={items} isLoaded={isLoaded} onSubmit={submitQuiz} isSubmitting={isSubmitting} />
         )}
       </Route>
       <Route exact path={`/quizsubmit`}>
