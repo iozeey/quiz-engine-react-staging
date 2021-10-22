@@ -20,7 +20,7 @@ const useRecorder = () => {
     }
 
     setIsWavUsed(true);
-  }, []);
+  }, [isWavUsed]);
   useEffect(() => {
     if (recorder === null) {
       console.log("recorder");
