@@ -21,7 +21,7 @@ const useRecorder = () => {
     }
 
     const handleData = e => {
-     let blob = new Blob([e.data], { type : 'audio/wav' });
+     let blob = new Blob([e.data], { type : 'audio/wav;codecs=flac' });
      var reader = new FileReader();
     reader.readAsDataURL(blob);
     reader.onloadend = function () {

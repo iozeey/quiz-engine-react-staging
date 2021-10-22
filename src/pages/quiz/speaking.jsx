@@ -1,11 +1,12 @@
 import * as React from "react";
 import useRecorder from "./useRecorder";
 
-export const Speaking = ({ speakingUrl,speaking_data }) => {
+export const Speaking = ({ speakingUrl,speaking_data,isReview, speakingResponseURL }) => {
   let [base64,audioURL, isRecording, startRecording, stopRecording] = useRecorder();
   speakingUrl(base64);
   return (
     <div className="row">
+      { !isReview ?
       <div className="col-12 mb-3">
         <button
           type="button"
@@ -34,8 +35,9 @@ export const Speaking = ({ speakingUrl,speaking_data }) => {
           </div>
         </button>
       </div>
+      :null}
       <div className="col-12 mb-3">
-        <audio src={audioURL} controls controlsList="nodownload" />
+        <audio src={isReview ? speakingResponseURL : audioURL} controls controlsList="nodownload" />
       </div>
       <div className="col-12">
         {speaking_data}
