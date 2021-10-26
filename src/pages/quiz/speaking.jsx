@@ -39,9 +39,9 @@ export const Speaking = ({ speakingUrl,speaking_data,isReview, speakingResponseU
       <div className="col-12 mb-3">
         <audio src={isReview ? speakingResponseURL : audioURL} controls controlsList="nodownload" />
       </div>
-      {/* <div className="col-12">
-              {speaking_data}
-            </div> */}
+      <div className="col-12">
+        {speaking_data}
+      </div>
     </div>
   );
 };

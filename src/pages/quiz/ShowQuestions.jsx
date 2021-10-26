@@ -55,7 +55,10 @@ function ShowQuestions({
                 inputFiledLength.push({questionNumber : question.id,fieldNumber :  fieldNumber[0], fieldlenght: fieldlenght[0]});
               }
             );
-            const trimedString = question.prompt_content.trim();
+            const trimedString = question.prompt_content.replace(
+              /(<|&lt;)br\s*\/*(>|&gt;)/g,
+              " "
+            );
             const converted = trimedString.replace(
               /\[\[[^\]]*\]\]/g,
               function replacer(matched) {
@@ -77,7 +80,7 @@ function ShowQuestions({
                     showNumbers={isShowNumbering}
                     counterClass="me-2"
                     counter={qai + 1 + "."}
-                    alignement = {question.question_alignement}
+                    alignement = {question.question_alignment}
                     title={ReactHtmlParser(converted.replace(/\*([\d]+)/g,''), {
                       transform: (node) => {
                         if (node.name === "input") {

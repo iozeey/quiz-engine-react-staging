@@ -13,7 +13,6 @@ import OpenButton from "./../../components/buttons/OpenButton";
 import { Savebtn } from "./../../components/buttons/savebtn";
 import SubmitButton from "./../../components/buttons/SubmitButton";
 import { Header } from "./../../components/header/header";
-import { Sendtaskbtn } from "../../components/buttons/sendTask";
 import { ExerciseType } from "./../../components/heading/heading";
 import SimpleModal from "./../../components/modals/SimpleModal";
 import QuestionDescription from "./../../components/question/QuestionDescrption";
@@ -152,10 +151,8 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
     <div className="dashboard-wrapper bg-white m-27">
       <div class="container quiz-background">
         <form onSubmit={handleSubmit(onFormSubmit)}>
-          <div className="">
-            
-            <div className="p-md-5">
-            <Row className="border p-3">
+          <div className="p-md-5">
+            <Row>
               <div className="col">
                 <Header />
               </div>
@@ -187,9 +184,10 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
               </Col>
               :null}
             </Row>
+            <div className="p-md-5">
               <div>
                 <div
-                  className="border p-3 row"
+                  className="border border-light p-3 row"
                   xs="1"
                   sm="1"
                   md="4"
@@ -220,7 +218,7 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                     </div>
                   </Col>
                 </div>
-                <Row className="border p-3">
+                <Row className="border border-light p-3">
                   <Col>
                     <div class="d-flex flex-column">
                       <QuestionHeading question={data.prompt_content} />
@@ -241,7 +239,7 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                   className={
                     size(data.additional_resource) <= 0
                       ? ""
-                      : "p-3 border"
+                      : "p-3 border border-light"
                   }
                 >
                   {size(data.additional_resource) <= 0 ? (
@@ -282,7 +280,7 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                     }
                   />
                 </Row>
-                <Row className="border p-3">
+                <Row className="border border-light p-3">
                   <TextArea
                     defaultValue={
                       data.completed_at === null ? data.answers : null
@@ -292,14 +290,14 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                     onBlur={onBlur}
                   />
                 </Row>
-                <Row className="border px-3 py-2">
+                <Row className="border border-light px-3 py-2">
                   <span className="text-muted">
                     {" "}
                     Words: {wordsCounter} words{" "}
                   </span>
                 </Row>
 
-                <Row className="border p-3">
+                <Row>
                   <div class="mb-3 mt-3 p-0 m-0">
                     {isReview || data.user_type !== "School Student" ? null : (
                       <div class="inline float-start">
@@ -310,8 +308,23 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                     {data.user_type !== "School Student" ||
                       isReview ? (
                         <div className="row">
-                        <div className="col-6">
-                        {getStudentid ? (
+                        <div className="col-8">
+                        {data && isReview ? (
+                          null
+                          // <div md className="mt-3 text-end">
+                          //   <span className="p-1 score-content">
+                          //     <b>
+                          //       <div className="inline">
+                          //         Score: { Math.floor(data.user_score)} / 100 points (
+                          //         {Math.floor((data.user_score / 100) * 100)}%)
+                          //       </div>
+                          //     </b>
+                          //   </span>
+                          // </div>
+                        ) : null}
+                        </div>
+                        <div className="text-end col-4">
+                          {getStudentid ? (
                             <Exitbtn
                               href={`${baseUrl}/school/school_quiz_grading/${getStudentid}`}
                             />
@@ -323,12 +336,6 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                               }}
                             />
                           )}
-                          
-                        </div>
-                        <div className="text-end col-6">
-                        <Sendtaskbtn
-                              href={`${baseUrl}/school/search_content?exercise_id=${data.id}`}
-                            />
                         </div>
                       </div>
                     ) : (
@@ -341,7 +348,7 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
               </div>
 
 
-              <div className="mt-3">
+              <div className="row">
               <div className="text-center ">
                 <a
                   class="btn btn-secondary py-1 text-nowrap"
