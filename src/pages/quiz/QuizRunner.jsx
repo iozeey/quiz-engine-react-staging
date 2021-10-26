@@ -38,7 +38,7 @@ import ShowQuestions from "./ShowQuestions";
 let answers = [];
 
 const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
-  if (data.completed_at != null) {
+  if (data.completed_at !== null) {
     isReview = true;
   }
 
@@ -546,7 +546,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                         </div>
 
                         <div className="text-end col-md-4 col-12">
-                          { data.user_type != "School Student" && !isReview?
+                          { data.user_type !== "School Student" && !isReview?
                           <Sendtaskbtn
                             href={`${baseUrl}/school/search_content?exercise_id=${data.id}`}
                           />
@@ -572,7 +572,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                            </div>
                             
                           )}
-                           { data.user_type != "School Student" && !isReview?
+                           { data.user_type !== "School Student" && !isReview?
                           <div className="mt-3">
                             <Sendtaskbtn
                             href={`${baseUrl}/school/search_content?exercise_id=${data.id}`}
