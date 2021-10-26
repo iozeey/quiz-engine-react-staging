@@ -152,8 +152,10 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
     <div className="dashboard-wrapper bg-white m-27">
       <div class="container quiz-background">
         <form onSubmit={handleSubmit(onFormSubmit)}>
-          <div className="p-md-5">
-            <Row>
+          <div className="">
+            
+            <div className="p-md-5">
+            <Row className="border p-3">
               <div className="col">
                 <Header />
               </div>
@@ -185,10 +187,9 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
               </Col>
               :null}
             </Row>
-            <div className="p-md-5">
               <div>
                 <div
-                  className="border border-light p-3 row"
+                  className="border p-3 row"
                   xs="1"
                   sm="1"
                   md="4"
@@ -219,7 +220,7 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                     </div>
                   </Col>
                 </div>
-                <Row className="border border-light p-3">
+                <Row className="border p-3">
                   <Col>
                     <div class="d-flex flex-column">
                       <QuestionHeading question={data.prompt_content} />
@@ -240,7 +241,7 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                   className={
                     size(data.additional_resource) <= 0
                       ? ""
-                      : "p-3 border border-light"
+                      : "p-3 border"
                   }
                 >
                   {size(data.additional_resource) <= 0 ? (
@@ -281,7 +282,7 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                     }
                   />
                 </Row>
-                <Row className="border border-light p-3">
+                <Row className="border p-3">
                   <TextArea
                     defaultValue={
                       data.completed_at === null ? data.answers : null
@@ -291,14 +292,14 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                     onBlur={onBlur}
                   />
                 </Row>
-                <Row className="border border-light px-3 py-2">
+                <Row className="border px-3 py-2">
                   <span className="text-muted">
                     {" "}
                     Words: {wordsCounter} words{" "}
                   </span>
                 </Row>
 
-                <Row>
+                <Row className="border p-3">
                   <div class="mb-3 mt-3 p-0 m-0">
                     {isReview || data.user_type !== "School Student" ? null : (
                       <div class="inline float-start">
@@ -340,7 +341,7 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
               </div>
 
 
-              <div className="row">
+              <div className="mt-3">
               <div className="text-center ">
                 <a
                   class="btn btn-secondary py-1 text-nowrap"

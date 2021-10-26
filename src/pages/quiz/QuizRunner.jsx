@@ -307,16 +307,19 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
   };
   if (!isLoaded)
     return (
-      <div class="centered  text-light fs-4">
+      <div class="centered text-light fs-4">
         <div class="spinner-border h-w-100" role="status"></div>
       </div>
     );
   return (
-    <div className="dashboard-wrapper bg-white m-27">
+    <div className="dashboard-wrapper border bg-white m-27">
       <div class="container quiz-background">
         <form onSubmit={handleSubmit(onFormSubmit)}>
-          <div className="p-md-5">
-            <Row>
+          <div className="">
+          
+            
+            <div className="p-md-5">
+            <Row className="border p-3">
               <Col sm>
                 <Header />
               </Col>
@@ -348,10 +351,9 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                 </Col>
               ) : null}
             </Row>
-            <div className="p-md-5">
               <div>
                 <div
-                  className="border border-light p-3 row"
+                  className="border border p-3 row"
                   xs="1"
                   sm="1"
                   md="4"
@@ -382,7 +384,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                     </div>
                   </Col>
                 </div>
-                <Row className="border border-light p-3">
+                <Row className="border border p-3">
                   <Col>
                     <div class="d-flex flex-column">
                       <QuestionHeading question={data.prompt_content} />
@@ -411,7 +413,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                   className={
                     size(data.additional_resource) <= 0
                       ? ""
-                      : "p-3 border border-light"
+                      : "p-3 border border"
                   }
                 >
                   {size(data.additional_resource) <= 0 ? (
@@ -452,7 +454,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                     }
                   />
                 </Row>
-                <Row className="border border-light p-3">
+                <Row className="border p-3">
                   {data.task_type === "Speaking Task" ? (
                     <Speaking
                       speakingUrl={setSpeakingUrl}
@@ -505,8 +507,8 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                   // </>
                 }
 
-                <Row>
-                  <div class="mb-3 mt-3 p-0 m-0">
+                <Row className="border p-3">
+                  <div class=" p-0 m-0">
                     {isReview || data.user_type !== "School Student" ? null : (
                       <div class="inline float-start">
                         {data.task_type !== "Speaking Task" ? (
@@ -540,48 +542,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                               />
                             )}
                           </div>
-                          <div className="inline-grid float-end">
-                            {data.user_score !== null &&
-                            data.user_type !== "STAFF" &&
-                            isReview ? (
-                              <div md className="mt-3 text-end">
-                                <span className="p-1 score-content">
-                                  <b>
-                                    <div className="inline">
-                                      Score: {Math.floor(data.user_score)} / 100
-                                      points (
-                                      {Math.floor(
-                                        (data.user_score / 100) * 100
-                                      )}
-                                      %)
-                                    </div>
-                                  </b>
-                                </span>
-                              </div>
-                            ) : null}
-
-                            <div className="pe-4 mt-3 text-center">
-                              <a
-                                class="btn btn-secondary py-1 text-nowrap"
-                                href={`${baseUrl}/contact`}
-                              >
-                                <i class="pe-2">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="20"
-                                    fill="currentColor"
-                                    class="bi bi-bug-fill"
-                                    viewBox="0 0 16 20"
-                                  >
-                                    <path d="M4.978.855a.5.5 0 1 0-.956.29l.41 1.352A4.985 4.985 0 0 0 3 6h10a4.985 4.985 0 0 0-1.432-3.503l.41-1.352a.5.5 0 1 0-.956-.29l-.291.956A4.978 4.978 0 0 0 8 1a4.979 4.979 0 0 0-2.731.811l-.29-.956z" />
-                                    <path d="M13 6v1H8.5v8.975A5 5 0 0 0 13 11h.5a.5.5 0 0 1 .5.5v.5a.5.5 0 1 0 1 0v-.5a1.5 1.5 0 0 0-1.5-1.5H13V9h1.5a.5.5 0 0 0 0-1H13V7h.5A1.5 1.5 0 0 0 15 5.5V5a.5.5 0 0 0-1 0v.5a.5.5 0 0 1-.5.5H13zm-5.5 9.975V7H3V6h-.5a.5.5 0 0 1-.5-.5V5a.5.5 0 0 0-1 0v.5A1.5 1.5 0 0 0 2.5 7H3v1H1.5a.5.5 0 0 0 0 1H3v1h-.5A1.5 1.5 0 0 0 1 11.5v.5a.5.5 0 1 0 1 0v-.5a.5.5 0 0 1 .5-.5H3a5 5 0 0 0 4.5 4.975z" />
-                                  </svg>
-                                </i>{" "}
-                                Report a bug
-                              </a>
-                            </div>
-                          </div>
+                          
                         </div>
 
                         <div className="text-end col-md-4 col-12">
@@ -595,7 +556,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                       </div>
                     ) : (
                       <div class="inline float-end">
-                        <span className="mx-1">
+                        <span className="">
                           {currentPage > 1 && (
                             <BackButton
                               onClick={() => {
@@ -606,13 +567,13 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                         </span>
                         <span>
                           {currentPage === data.total_pages && (
-                           <div className="mb-3">
+                           <div className="">
                               <SubmitButton disabled={isSubmitting} />
                            </div>
                             
                           )}
                            { data.user_type != "School Student" && !isReview?
-                          <div className="">
+                          <div className="mt-3">
                             <Sendtaskbtn
                             href={`${baseUrl}/school/search_content?exercise_id=${data.id}`}
                           />
@@ -633,6 +594,51 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                       </div>
                     )}
                   </div>
+                </Row>
+                <Row>
+                <div className="inline-grid ">
+                            {data.user_score !== null &&
+                            data.user_type !== "STAFF" &&
+                            isReview ? (
+                              <div md className="mt-3 text-center">
+                                <span className="p-1 score-content">
+                                  <b>
+                                    <div className="inline">
+                                      Score: {Math.floor(data.user_score)} / 100
+                                      points (
+                                      {Math.floor(
+                                        (data.user_score / 100) * 100
+                                      )}
+                                      %)
+                                    </div>
+                                  </b>
+                                </span>
+                              </div>
+                            ) : null}
+
+                            
+                          </div>
+                <div className="pe-4 mt-3 text-center">
+                              <a
+                                class="btn btn-secondary py-1 text-nowrap"
+                                href={`${baseUrl}/contact`}
+                              >
+                                <i class="pe-2">
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="20"
+                                    fill="currentColor"
+                                    class="bi bi-bug-fill"
+                                    viewBox="0 0 16 20"
+                                  >
+                                    <path d="M4.978.855a.5.5 0 1 0-.956.29l.41 1.352A4.985 4.985 0 0 0 3 6h10a4.985 4.985 0 0 0-1.432-3.503l.41-1.352a.5.5 0 1 0-.956-.29l-.291.956A4.978 4.978 0 0 0 8 1a4.979 4.979 0 0 0-2.731.811l-.29-.956z" />
+                                    <path d="M13 6v1H8.5v8.975A5 5 0 0 0 13 11h.5a.5.5 0 0 1 .5.5v.5a.5.5 0 1 0 1 0v-.5a1.5 1.5 0 0 0-1.5-1.5H13V9h1.5a.5.5 0 0 0 0-1H13V7h.5A1.5 1.5 0 0 0 15 5.5V5a.5.5 0 0 0-1 0v.5a.5.5 0 0 1-.5.5H13zm-5.5 9.975V7H3V6h-.5a.5.5 0 0 1-.5-.5V5a.5.5 0 0 0-1 0v.5A1.5 1.5 0 0 0 2.5 7H3v1H1.5a.5.5 0 0 0 0 1H3v1h-.5A1.5 1.5 0 0 0 1 11.5v.5a.5.5 0 1 0 1 0v-.5a.5.5 0 0 1 .5-.5H3a5 5 0 0 0 4.5 4.975z" />
+                                  </svg>
+                                </i>{" "}
+                                Report a bug
+                              </a>
+                            </div>
                 </Row>
               </div>
             </div>
