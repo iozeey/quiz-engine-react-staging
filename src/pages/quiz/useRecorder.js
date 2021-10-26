@@ -63,8 +63,8 @@ const useRecorder = () => {
 async function requestRecorder() {
   // const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
   // return new MediaRecorder(stream);
-
   const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  window.localstream =stream;
   const mediaRecoder = new MediaRecorder(stream, { mimeType: "audio/wav" });
   return mediaRecoder;
 }

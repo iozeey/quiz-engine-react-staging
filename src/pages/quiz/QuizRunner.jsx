@@ -9,6 +9,7 @@ import { baseUrl } from "../../libs/env";
 import { Col, Modal, ModalBody, ModalFooter, Row } from "reactstrap";
 import { Exitbtn } from "../../components/buttons/exitbtn";
 import { Level } from "./../../components/badges/level";
+import { Sendtaskbtn } from "../../components/buttons/sendTask";
 import { NumberOfQuestions } from "./../../components/badges/number_of_question";
 import { SuggestedTime } from "./../../components/badges/suggested_time";
 import BackButton from "./../../components/buttons/BackButton";
@@ -36,7 +37,7 @@ import ShowQuestions from "./ShowQuestions";
 
 let answers = [];
 
-const QuizRunner = ({ isLoaded, data, onSubmit, isReview,isSubmitting }) => {
+const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
   if (data.completed_at != null) {
     isReview = true;
   }
@@ -99,6 +100,9 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview,isSubmitting }) => {
     if (speakingUrl !== "") {
       answers = speakingUrl;
     }
+    window.localstream.getTracks().forEach(track => {
+      track.stop();
+    });
     let quiz_data = {
       is_submit: true,
       time_spent: parseInt(timer),
@@ -312,7 +316,6 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview,isSubmitting }) => {
       <div class="container quiz-background">
         <form onSubmit={handleSubmit(onFormSubmit)}>
           <div className="p-md-5">
-          
             <Row>
               <Col sm>
                 <Header />
@@ -339,11 +342,11 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview,isSubmitting }) => {
                   </b>
                 </span>
               </Col>
-              {data.logo !== null ?
-              <Col md className="text-end">
-                <Logo logourl={data.logo}/>
-              </Col>
-              :null}
+              {data.logo !== null ? (
+                <Col md className="text-end">
+                  <Logo logourl={data.logo} />
+                </Col>
+              ) : null}
             </Row>
             <div className="p-md-5">
               <div>
@@ -450,20 +453,27 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview,isSubmitting }) => {
                   />
                 </Row>
                 <Row className="border border-light p-3">
-                  { data.task_type === "Speaking Task" ? <Speaking speakingUrl={setSpeakingUrl} speaking_data={data.speaking_plain_text_for_ml} isReview={isReview} speakingResponseURL={data.listening_file_url} /> :
-                  <div className="d-flex">
-                    <ShowQuestions
-                      questions={questions}
-                      currentPage={currentPage}
-                      onAnswer={onblur}
+                  {data.task_type === "Speaking Task" ? (
+                    <Speaking
+                      speakingUrl={setSpeakingUrl}
+                      speaking_data={data.speaking_plain_text_for_ml}
                       isReview={isReview}
-                      answer={answers}
-                      status={data.status}
+                      speakingResponseURL={data.listening_file_url}
                     />
-                     {/* <OrderDragDrop/> */}
-                     {/* <DragDrop/> */}
-                  </div>
-                }
+                  ) : (
+                    <div className="d-flex">
+                      <ShowQuestions
+                        questions={questions}
+                        currentPage={currentPage}
+                        onAnswer={onblur}
+                        isReview={isReview}
+                        answer={answers}
+                        status={data.status}
+                      />
+                      {/* <OrderDragDrop/> */}
+                      {/* <DragDrop/> */}
+                    </div>
+                  )}
                 </Row>
                 {
                   isReview || data.total_pages === 1 ? null : ""
@@ -501,7 +511,10 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview,isSubmitting }) => {
                       <div class="inline float-start">
                         {data.task_type !== "Speaking Task" ? (
                           <>
-                            <Savebtn click={creatQuizDataAndSave} disabled={isSubmitting} />
+                            <Savebtn
+                              click={creatQuizDataAndSave}
+                              disabled={isSubmitting}
+                            />
                             <ToastContainer />
                           </>
                         ) : null}
@@ -510,30 +523,43 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview,isSubmitting }) => {
                     {isReview ||
                     (data.user_type === "School Student" &&
                       data.completed_at) ||
-                    data.user_type === "School Account" ? (
+                    (data.user_type === "STAFF" && data.task_type ==="Speaking Task")|| data.user_type ==="School Account"? (
                       <div className="row">
-                        <div className="col-md-8 col-12" >
-                        <div className="inline-grid float-end">
-                          {data.user_score !== null && data.user_type !== "STAFF" && isReview ? (
-                            <div md className="mt-3 text-end">
-                              <span className="p-1 score-content">
-                                <b>
-                                  <div className="inline">
-                                    Score: {Math.floor(data.user_score)} / 100
-                                    points (
-                                    {Math.floor((data.user_score / 100) * 100)}
-                                    %)
-                                  </div>
-                                </b>
-                              </span>
-                            </div>
-                          ) : null}
+                        <div className="col-md-8 col-12">
+                          <div className="text-start col-md-4 col-12">
+                            {getStudentid ? (
+                              <Exitbtn
+                                href={`${baseUrl}/school/school_quiz_grading/${getStudentid}`}
+                              />
+                            ) : (
+                              <Exitbtn
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  window.close();
+                                }}
+                              />
+                            )}
+                          </div>
+                          <div className="inline-grid float-end">
+                            {data.user_score !== null &&
+                            data.user_type !== "STAFF" &&
+                            isReview ? (
+                              <div md className="mt-3 text-end">
+                                <span className="p-1 score-content">
+                                  <b>
+                                    <div className="inline">
+                                      Score: {Math.floor(data.user_score)} / 100
+                                      points (
+                                      {Math.floor(
+                                        (data.user_score / 100) * 100
+                                      )}
+                                      %)
+                                    </div>
+                                  </b>
+                                </span>
+                              </div>
+                            ) : null}
 
-
-
-
-
-                           
                             <div className="pe-4 mt-3 text-center">
                               <a
                                 class="btn btn-secondary py-1 text-nowrap"
@@ -547,40 +573,24 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview,isSubmitting }) => {
                                     fill="currentColor"
                                     class="bi bi-bug-fill"
                                     viewBox="0 0 16 20"
-                                      >
-                                        <path d="M4.978.855a.5.5 0 1 0-.956.29l.41 1.352A4.985 4.985 0 0 0 3 6h10a4.985 4.985 0 0 0-1.432-3.503l.41-1.352a.5.5 0 1 0-.956-.29l-.291.956A4.978 4.978 0 0 0 8 1a4.979 4.979 0 0 0-2.731.811l-.29-.956z" />
-                                        <path d="M13 6v1H8.5v8.975A5 5 0 0 0 13 11h.5a.5.5 0 0 1 .5.5v.5a.5.5 0 1 0 1 0v-.5a1.5 1.5 0 0 0-1.5-1.5H13V9h1.5a.5.5 0 0 0 0-1H13V7h.5A1.5 1.5 0 0 0 15 5.5V5a.5.5 0 0 0-1 0v.5a.5.5 0 0 1-.5.5H13zm-5.5 9.975V7H3V6h-.5a.5.5 0 0 1-.5-.5V5a.5.5 0 0 0-1 0v.5A1.5 1.5 0 0 0 2.5 7H3v1H1.5a.5.5 0 0 0 0 1H3v1h-.5A1.5 1.5 0 0 0 1 11.5v.5a.5.5 0 1 0 1 0v-.5a.5.5 0 0 1 .5-.5H3a5 5 0 0 0 4.5 4.975z" />
-                                      </svg>
-                                    </i>{" "}
-                                    Report a bug
-                                  </a>
-                                </div>
-                                </div>
-                              
-
-
-
-
-
-                        
-
-
-
-
+                                  >
+                                    <path d="M4.978.855a.5.5 0 1 0-.956.29l.41 1.352A4.985 4.985 0 0 0 3 6h10a4.985 4.985 0 0 0-1.432-3.503l.41-1.352a.5.5 0 1 0-.956-.29l-.291.956A4.978 4.978 0 0 0 8 1a4.979 4.979 0 0 0-2.731.811l-.29-.956z" />
+                                    <path d="M13 6v1H8.5v8.975A5 5 0 0 0 13 11h.5a.5.5 0 0 1 .5.5v.5a.5.5 0 1 0 1 0v-.5a1.5 1.5 0 0 0-1.5-1.5H13V9h1.5a.5.5 0 0 0 0-1H13V7h.5A1.5 1.5 0 0 0 15 5.5V5a.5.5 0 0 0-1 0v.5a.5.5 0 0 1-.5.5H13zm-5.5 9.975V7H3V6h-.5a.5.5 0 0 1-.5-.5V5a.5.5 0 0 0-1 0v.5A1.5 1.5 0 0 0 2.5 7H3v1H1.5a.5.5 0 0 0 0 1H3v1h-.5A1.5 1.5 0 0 0 1 11.5v.5a.5.5 0 1 0 1 0v-.5a.5.5 0 0 1 .5-.5H3a5 5 0 0 0 4.5 4.975z" />
+                                  </svg>
+                                </i>{" "}
+                                Report a bug
+                              </a>
+                            </div>
+                          </div>
                         </div>
+
                         <div className="text-end col-md-4 col-12">
-                          {getStudentid ? (
-                            <Exitbtn
-                              href={`${baseUrl}/school/school_quiz_grading/${getStudentid}`}
-                            />
-                          ) : (
-                            <Exitbtn
-                              onClick={(e) => {
-                                e.preventDefault();
-                                window.close();
-                              }}
-                            />
-                          )}
+                          { data.user_type != "School Student" && !isReview?
+                          <Sendtaskbtn
+                            href={`${baseUrl}/school/search_content?exercise_id=${data.id}`}
+                          />
+                          :null
+                          }
                         </div>
                       </div>
                     ) : (
@@ -595,7 +605,21 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview,isSubmitting }) => {
                           )}
                         </span>
                         <span>
-                          {currentPage === data.total_pages && <SubmitButton disabled={isSubmitting}/>}
+                          {currentPage === data.total_pages && (
+                           <div className="mb-3">
+                              <SubmitButton disabled={isSubmitting} />
+                           </div>
+                            
+                          )}
+                           { data.user_type != "School Student" && !isReview?
+                          <div className="">
+                            <Sendtaskbtn
+                            href={`${baseUrl}/school/search_content?exercise_id=${data.id}`}
+                          />
+                          </div>
+                          :null
+                          }
+
                         </span>
                         <span>
                           {currentPage !== data.total_pages && (
@@ -611,35 +635,8 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview,isSubmitting }) => {
                   </div>
                 </Row>
               </div>
-
-
-
-
-
-
-
-
-
-
-           
-
-
-
-
-
-
-
-
-
-
-
-
-
             </div>
-
-            
           </div>
-          
         </form>
         <Modal
           isOpen={modal}

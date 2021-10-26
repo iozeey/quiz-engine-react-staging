@@ -13,6 +13,7 @@ import OpenButton from "./../../components/buttons/OpenButton";
 import { Savebtn } from "./../../components/buttons/savebtn";
 import SubmitButton from "./../../components/buttons/SubmitButton";
 import { Header } from "./../../components/header/header";
+import { Sendtaskbtn } from "../../components/buttons/sendTask";
 import { ExerciseType } from "./../../components/heading/heading";
 import SimpleModal from "./../../components/modals/SimpleModal";
 import QuestionDescription from "./../../components/question/QuestionDescrption";
@@ -308,23 +309,8 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                     {data.user_type !== "School Student" ||
                       isReview ? (
                         <div className="row">
-                        <div className="col-8">
-                        {data && isReview ? (
-                          null
-                          // <div md className="mt-3 text-end">
-                          //   <span className="p-1 score-content">
-                          //     <b>
-                          //       <div className="inline">
-                          //         Score: { Math.floor(data.user_score)} / 100 points (
-                          //         {Math.floor((data.user_score / 100) * 100)}%)
-                          //       </div>
-                          //     </b>
-                          //   </span>
-                          // </div>
-                        ) : null}
-                        </div>
-                        <div className="text-end col-4">
-                          {getStudentid ? (
+                        <div className="col-6">
+                        {getStudentid ? (
                             <Exitbtn
                               href={`${baseUrl}/school/school_quiz_grading/${getStudentid}`}
                             />
@@ -336,6 +322,12 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                               }}
                             />
                           )}
+                          
+                        </div>
+                        <div className="text-end col-6">
+                        <Sendtaskbtn
+                              href={`${baseUrl}/school/search_content?exercise_id=${data.id}`}
+                            />
                         </div>
                       </div>
                     ) : (
