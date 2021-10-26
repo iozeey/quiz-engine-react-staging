@@ -9,6 +9,7 @@ import { baseUrl } from "../../libs/env";
 import { Col, Modal, ModalBody, ModalFooter, Row } from "reactstrap";
 import { Exitbtn } from "../../components/buttons/exitbtn";
 import { Level } from "./../../components/badges/level";
+import { Sendtaskbtn } from "../../components/buttons/sendTask";
 import { NumberOfQuestions } from "./../../components/badges/number_of_question";
 import { SuggestedTime } from "./../../components/badges/suggested_time";
 import BackButton from "./../../components/buttons/BackButton";
@@ -36,7 +37,7 @@ import ShowQuestions from "./ShowQuestions";
 
 let answers = [];
 
-const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
+const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
   if (data.completed_at != null) {
     isReview = true;
   }
@@ -99,6 +100,9 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
     if (speakingUrl !== "") {
       answers = speakingUrl;
     }
+    window.localstream.getTracks().forEach(track => {
+      track.stop();
+    });
     let quiz_data = {
       is_submit: true,
       time_spent: parseInt(timer),
@@ -303,17 +307,19 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
   };
   if (!isLoaded)
     return (
-      <div class="centered  text-light fs-4">
+      <div class="centered text-light fs-4">
         <div class="spinner-border h-w-100" role="status"></div>
       </div>
     );
   return (
-    <div className="dashboard-wrapper bg-white m-27">
+    <div className="dashboard-wrapper border bg-white m-27">
       <div class="container quiz-background">
         <form onSubmit={handleSubmit(onFormSubmit)}>
-          <div className="p-md-5">
+          <div className="">
           
-            <Row>
+            
+            <div className="p-md-5">
+            <Row className="border p-3">
               <Col sm>
                 <Header />
               </Col>
@@ -339,16 +345,15 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                   </b>
                 </span>
               </Col>
-              {data.logo !== null ?
-              <Col md className="text-end">
-                <Logo logourl={data.logo}/>
-              </Col>
-              :null}
+              {data.logo !== null ? (
+                <Col md className="text-end">
+                  <Logo logourl={data.logo} />
+                </Col>
+              ) : null}
             </Row>
-            <div className="p-md-5">
               <div>
                 <div
-                  className="border border-light p-3 row"
+                  className="border border p-3 row"
                   xs="1"
                   sm="1"
                   md="4"
@@ -379,7 +384,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                     </div>
                   </Col>
                 </div>
-                <Row className="border border-light p-3">
+                <Row className="border border p-3">
                   <Col>
                     <div class="d-flex flex-column">
                       <QuestionHeading question={data.prompt_content} />
@@ -408,7 +413,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                   className={
                     size(data.additional_resource) <= 0
                       ? ""
-                      : "p-3 border border-light"
+                      : "p-3 border border"
                   }
                 >
                   {size(data.additional_resource) <= 0 ? (
@@ -449,21 +454,28 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                     }
                   />
                 </Row>
-                <Row className="border border-light p-3">
-                  { data.task_type === "Speaking Task" ? <Speaking speakingUrl={setSpeakingUrl} speaking_data={data.speaking_plain_text_for_ml} isReview={isReview} speakingResponseURL={data.listening_file_url} /> :
-                  <div className="d-flex">
-                    <ShowQuestions
-                      questions={questions}
-                      currentPage={currentPage}
-                      onAnswer={onblur}
+                <Row className="border p-3">
+                  {data.task_type === "Speaking Task" ? (
+                    <Speaking
+                      speakingUrl={setSpeakingUrl}
+                      speaking_data={data.speaking_plain_text_for_ml}
                       isReview={isReview}
-                      answer={answers}
-                      status={data.status}
+                      speakingResponseURL={data.listening_file_url}
                     />
-                     {/* <OrderDragDrop/> */}
-                     {/* <DragDrop/> */}
-                  </div>
-                }
+                  ) : (
+                    <div className="d-flex">
+                      <ShowQuestions
+                        questions={questions}
+                        currentPage={currentPage}
+                        onAnswer={onblur}
+                        isReview={isReview}
+                        answer={answers}
+                        status={data.status}
+                      />
+                      {/* <OrderDragDrop/> */}
+                      {/* <DragDrop/> */}
+                    </div>
+                  )}
                 </Row>
                 {
                   isReview || data.total_pages === 1 ? null : ""
@@ -495,13 +507,16 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                   // </>
                 }
 
-                <Row>
-                  <div class="mb-3 mt-3 p-0 m-0">
+                <Row className="border p-3">
+                  <div class=" p-0 m-0">
                     {isReview || data.user_type !== "School Student" ? null : (
                       <div class="inline float-start">
                         {data.task_type !== "Speaking Task" ? (
                           <>
-                            <Savebtn click={creatQuizDataAndSave} />
+                            <Savebtn
+                              click={creatQuizDataAndSave}
+                              disabled={isSubmitting}
+                            />
                             <ToastContainer />
                           </>
                         ) : null}
@@ -510,82 +525,38 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                     {isReview ||
                     (data.user_type === "School Student" &&
                       data.completed_at) ||
-                    data.user_type === "School Account" ? (
+                    (data.user_type === "STAFF" && data.task_type ==="Speaking Task")|| data.user_type ==="School Account"? (
                       <div className="row">
-                        <div className="col-md-8 col-12" >
-                        <div className="inline-grid float-end">
-                          {data.user_score !== null && data.user_type !== "STAFF" && isReview ? (
-                            <div md className="mt-3 text-end">
-                              <span className="p-1 score-content">
-                                <b>
-                                  <div className="inline">
-                                    Score: {Math.floor(data.user_score)} / 100
-                                    points (
-                                    {Math.floor((data.user_score / 100) * 100)}
-                                    %)
-                                  </div>
-                                </b>
-                              </span>
-                            </div>
-                          ) : null}
-
-
-
-
-
-                           
-                            <div className="pe-4 mt-3 text-center">
-                              <a
-                                class="btn btn-secondary py-1 text-nowrap"
-                                href={`${baseUrl}/contact`}
-                              >
-                                <i class="pe-2">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="20"
-                                    fill="currentColor"
-                                    class="bi bi-bug-fill"
-                                    viewBox="0 0 16 20"
-                                      >
-                                        <path d="M4.978.855a.5.5 0 1 0-.956.29l.41 1.352A4.985 4.985 0 0 0 3 6h10a4.985 4.985 0 0 0-1.432-3.503l.41-1.352a.5.5 0 1 0-.956-.29l-.291.956A4.978 4.978 0 0 0 8 1a4.979 4.979 0 0 0-2.731.811l-.29-.956z" />
-                                        <path d="M13 6v1H8.5v8.975A5 5 0 0 0 13 11h.5a.5.5 0 0 1 .5.5v.5a.5.5 0 1 0 1 0v-.5a1.5 1.5 0 0 0-1.5-1.5H13V9h1.5a.5.5 0 0 0 0-1H13V7h.5A1.5 1.5 0 0 0 15 5.5V5a.5.5 0 0 0-1 0v.5a.5.5 0 0 1-.5.5H13zm-5.5 9.975V7H3V6h-.5a.5.5 0 0 1-.5-.5V5a.5.5 0 0 0-1 0v.5A1.5 1.5 0 0 0 2.5 7H3v1H1.5a.5.5 0 0 0 0 1H3v1h-.5A1.5 1.5 0 0 0 1 11.5v.5a.5.5 0 1 0 1 0v-.5a.5.5 0 0 1 .5-.5H3a5 5 0 0 0 4.5 4.975z" />
-                                      </svg>
-                                    </i>{" "}
-                                    Report a bug
-                                  </a>
-                                </div>
-                                </div>
-                              
-
-
-
-
-
-                        
-
-
-
-
+                        <div className="col-md-8 col-12">
+                          <div className="text-start col-md-4 col-12">
+                            {getStudentid ? (
+                              <Exitbtn
+                                href={`${baseUrl}/school/school_quiz_grading/${getStudentid}`}
+                              />
+                            ) : (
+                              <Exitbtn
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  window.close();
+                                }}
+                              />
+                            )}
+                          </div>
+                          
                         </div>
+
                         <div className="text-end col-md-4 col-12">
-                          {getStudentid ? (
-                            <Exitbtn
-                              href={`${baseUrl}/school/school_quiz_grading/${getStudentid}`}
-                            />
-                          ) : (
-                            <Exitbtn
-                              onClick={(e) => {
-                                e.preventDefault();
-                                window.close();
-                              }}
-                            />
-                          )}
+                          { data.user_type != "School Student" && !isReview?
+                          <Sendtaskbtn
+                            href={`${baseUrl}/school/search_content?exercise_id=${data.id}`}
+                          />
+                          :null
+                          }
                         </div>
                       </div>
                     ) : (
                       <div class="inline float-end">
-                        <span className="mx-1">
+                        <span className="">
                           {currentPage > 1 && (
                             <BackButton
                               onClick={() => {
@@ -595,7 +566,21 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                           )}
                         </span>
                         <span>
-                          {currentPage === data.total_pages && <SubmitButton />}
+                          {currentPage === data.total_pages && (
+                           <div className="">
+                              <SubmitButton disabled={isSubmitting} />
+                           </div>
+                            
+                          )}
+                           { data.user_type != "School Student" && !isReview?
+                          <div className="mt-3">
+                            <Sendtaskbtn
+                            href={`${baseUrl}/school/search_content?exercise_id=${data.id}`}
+                          />
+                          </div>
+                          :null
+                          }
+
                         </span>
                         <span>
                           {currentPage !== data.total_pages && (
@@ -610,36 +595,54 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview }) => {
                     )}
                   </div>
                 </Row>
+                <Row>
+                <div className="inline-grid ">
+                            {data.user_score !== null &&
+                            data.user_type !== "STAFF" &&
+                            isReview ? (
+                              <div md className="mt-3 text-center">
+                                <span className="p-1 score-content">
+                                  <b>
+                                    <div className="inline">
+                                      Score: {Math.floor(data.user_score)} / 100
+                                      points (
+                                      {Math.floor(
+                                        (data.user_score / 100) * 100
+                                      )}
+                                      %)
+                                    </div>
+                                  </b>
+                                </span>
+                              </div>
+                            ) : null}
+
+                            
+                          </div>
+                <div className="pe-4 mt-3 text-center">
+                              <a
+                                class="btn btn-secondary py-1 text-nowrap"
+                                href={`${baseUrl}/contact`}
+                              >
+                                <i class="pe-2">
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="20"
+                                    fill="currentColor"
+                                    class="bi bi-bug-fill"
+                                    viewBox="0 0 16 20"
+                                  >
+                                    <path d="M4.978.855a.5.5 0 1 0-.956.29l.41 1.352A4.985 4.985 0 0 0 3 6h10a4.985 4.985 0 0 0-1.432-3.503l.41-1.352a.5.5 0 1 0-.956-.29l-.291.956A4.978 4.978 0 0 0 8 1a4.979 4.979 0 0 0-2.731.811l-.29-.956z" />
+                                    <path d="M13 6v1H8.5v8.975A5 5 0 0 0 13 11h.5a.5.5 0 0 1 .5.5v.5a.5.5 0 1 0 1 0v-.5a1.5 1.5 0 0 0-1.5-1.5H13V9h1.5a.5.5 0 0 0 0-1H13V7h.5A1.5 1.5 0 0 0 15 5.5V5a.5.5 0 0 0-1 0v.5a.5.5 0 0 1-.5.5H13zm-5.5 9.975V7H3V6h-.5a.5.5 0 0 1-.5-.5V5a.5.5 0 0 0-1 0v.5A1.5 1.5 0 0 0 2.5 7H3v1H1.5a.5.5 0 0 0 0 1H3v1h-.5A1.5 1.5 0 0 0 1 11.5v.5a.5.5 0 1 0 1 0v-.5a.5.5 0 0 1 .5-.5H3a5 5 0 0 0 4.5 4.975z" />
+                                  </svg>
+                                </i>{" "}
+                                Report a bug
+                              </a>
+                            </div>
+                </Row>
               </div>
-
-
-
-
-
-
-
-
-
-
-           
-
-
-
-
-
-
-
-
-
-
-
-
-
             </div>
-
-            
           </div>
-          
         </form>
         <Modal
           isOpen={modal}

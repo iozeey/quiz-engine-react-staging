@@ -23,11 +23,7 @@ const useRecorder = () => {
   }, [isWavUsed]);
   useEffect(() => {
     if (recorder === null) {
-      console.log("recorder");
-
       if (isRecording) {
-        console.log("isRecording");
-
         requestRecorder().then(setRecorder, console.error);
       }
       return;
@@ -40,15 +36,13 @@ const useRecorder = () => {
     }
 
     const handleData = (e) => {
-      console.log("some", e);
-      let blob = new Blob([e.data], { type: "audio/wav;codecs=flac" });
       var reader = new FileReader();
-      reader.readAsDataURL(blob);
+      reader.readAsDataURL(e.data);
       reader.onloadend = function () {
         var base64data = reader.result;
         setBase(base64data);
       };
-      setAudioURL(URL.createObjectURL(blob));
+      setAudioURL(URL.createObjectURL(e.data));
     };
 
     recorder.addEventListener("dataavailable", handleData);
@@ -69,12 +63,9 @@ const useRecorder = () => {
 async function requestRecorder() {
   // const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
   // return new MediaRecorder(stream);
-
   const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  console.log("requestRecorder,", stream);
+  window.localstream =stream;
   const mediaRecoder = new MediaRecorder(stream, { mimeType: "audio/wav" });
-
-  console.log("mediaRecoder,", mediaRecoder);
   return mediaRecoder;
 }
 export default useRecorder;
