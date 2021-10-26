@@ -326,9 +326,10 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                           
                         </div>
                         <div className="text-end col-6">
+                          {data.user_type !=="School Student" ?
                         <Sendtaskbtn
                               href={`${baseUrl}/school/search_content?exercise_id=${data.id}`}
-                            />
+                            />:null}
                         </div>
                       </div>
                     ) : (

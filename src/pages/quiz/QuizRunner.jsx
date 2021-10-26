@@ -99,10 +99,11 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
     const timer = window.sessionStorage.getItem("timer");
     if (speakingUrl !== "") {
       answers = speakingUrl;
+      window.localstream.getTracks().forEach(track => {
+        track.stop();
+      });
     }
-    window.localstream.getTracks().forEach(track => {
-      track.stop();
-    });
+   
     let quiz_data = {
       is_submit: true,
       time_spent: parseInt(timer),
