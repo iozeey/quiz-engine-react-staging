@@ -189,7 +189,7 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
             </Row>
               <div>
                 <div
-                  className="border p-3 row"
+                  className="border border-top-0 p-3 row"
                   xs="1"
                   sm="1"
                   md="4"
@@ -220,7 +220,7 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                     </div>
                   </Col>
                 </div>
-                <Row className="border p-3">
+                <Row className="border border-top-0 p-3">
                   <Col>
                     <div class="d-flex flex-column">
                       <QuestionHeading question={data.prompt_content} />
@@ -282,7 +282,7 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                     }
                   />
                 </Row>
-                <Row className="border p-3">
+                <Row className="border border-top-0 p-3">
                   <TextArea
                     defaultValue={
                       data.completed_at === null ? data.answers : null
@@ -292,14 +292,14 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                     onBlur={onBlur}
                   />
                 </Row>
-                <Row className="border px-3 py-2">
+                <Row className="border border-top-0 px-3 py-2">
                   <span className="text-muted">
                     {" "}
                     Words: {wordsCounter} words{" "}
                   </span>
                 </Row>
 
-                <Row className="border p-3">
+                <Row className="border border-top-0 p-3">
                   <div class="mb-3 mt-3 p-0 m-0">
                     {isReview || data.user_type !== "School Student" ? null : (
                       <div class="inline float-start">

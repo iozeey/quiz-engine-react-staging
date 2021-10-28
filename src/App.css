@@ -308,6 +308,12 @@ input[type="radio"] {
   }
 }
 
+@media (max-height  : 752px) {
+  .vh-94{
+    height: auto !important;
+  }
+}
+
 select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -394,4 +400,7 @@ width: 100px;
 }
 .audio-react-recorder__canvas{
   display: none !important;
+}
+.vh-94{
+  height: 94vh ;
 }

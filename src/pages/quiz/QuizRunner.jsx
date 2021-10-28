@@ -313,7 +313,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
       </div>
     );
   return (
-    <div className="dashboard-wrapper bg-white m-27">
+    <div className="dashboard-wrapper vh-94 bg-white m-27">
       <div class="container bg-white">
         <form onSubmit={handleSubmit(onFormSubmit)}>
           <div className="">
@@ -354,7 +354,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
             </Row>
               <div>
                 <div
-                  className="border border p-3 row"
+                  className="border border-top-0 p-3 row"
                   xs="1"
                   sm="1"
                   md="4"
@@ -385,7 +385,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                     </div>
                   </Col>
                 </div>
-                <Row className="border border p-3">
+                <Row className="border border-top-0 p-3">
                   <Col>
                     <div class="d-flex flex-column">
                       <QuestionHeading question={data.prompt_content} />
@@ -414,7 +414,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                   className={
                     size(data.additional_resource) <= 0
                       ? ""
-                      : "p-3 border border"
+                      : "p-3 border border-top-0"
                   }
                 >
                   {size(data.additional_resource) <= 0 ? (
@@ -455,7 +455,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                     }
                   />
                 </Row>
-                <Row className="border p-3">
+                <Row className="border border-top-0 p-3">
                   {data.task_type === "Speaking Task" ? (
                     <Speaking
                       speakingUrl={setSpeakingUrl}
@@ -508,7 +508,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                   // </>
                 }
 
-                <Row className="border p-3">
+                <Row className="border border-top-0 p-3">
                   <div class=" p-0 m-0">
                     {isReview || data.user_type !== "School Student" ? null : (
                       <div class="inline float-start">
@@ -600,7 +600,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                 <div className="inline-grid ">
                             {data.user_score !== null &&
                             data.user_type !== "STAFF" &&
-                            isReview ? (
+                            isReview && data.task_type !== "Speaking Task" ? (
                               <div md className="mt-3 text-center">
                                 <span className="p-1 score-content">
                                   <b>
