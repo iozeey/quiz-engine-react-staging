@@ -31,9 +31,9 @@ import { QuestionHeading } from "./../../components/question/question_heading";
 import { Timer } from "./../../components/timer/timer";
 import { Logo } from "./Logo";
 import { Speaking } from "./speaking";
-import { OrderDragDrop } from "./OrderDragDrop";
+// import { OrderDragDrop } from "./OrderDragDrop";
 import ShowQuestions from "./ShowQuestions";
-import { DragDrop } from "./DragDrop";
+// import { DragDrop } from "./DragDrop";
 
 let answers = [];
 
@@ -456,7 +456,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                   />
                 </Row>
                 <Row className="border border-top-0 p-3">
-                  {data.task_type === "1Speaking Task" ? (
+                  {data.task_type === "Speaking Task" ? (
                     <Speaking
                       speakingUrl={setSpeakingUrl}
                       speaking_data={data.speaking_plain_text_for_ml}
@@ -474,7 +474,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                         status={data.status}
                       />
                       {/* <OrderDragDrop/> */}
-                      <DragDrop/>
+                      {/* <DragDrop/> */}
                     </div>
                   )}
                 </Row>
@@ -599,7 +599,6 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                 <Row>
                 <div className="inline-grid ">
                             {data.user_score !== null &&
-                            data.user_type !== "STAFF" &&
                             isReview && data.task_type !== "Speaking Task" ? (
                               <div md className="mt-3 text-center">
                                 <span className="p-1 score-content">
