@@ -313,7 +313,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
       </div>
     );
   return (
-    <div className="dashboard-wrapper vh-94 bg-white m-27">
+    <div className="dashboard-wrapper bg-white m-27">
       <div class="container bg-white">
         <form onSubmit={handleSubmit(onFormSubmit)}>
           <div className="">
