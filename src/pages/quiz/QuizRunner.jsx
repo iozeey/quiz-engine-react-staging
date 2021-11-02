@@ -306,6 +306,8 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
       setSaveModal(!saveModal);
     }
   };
+  let params = (new URL(document.location)).searchParams;
+  let exercise_page_number = params.get("exercise_page_number");
   if (!isLoaded)
     return (
       <div class="centered text-light fs-4">
@@ -549,7 +551,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                         <div className="text-end col-md-4 col-12">
                           { data.user_type !== "School Student" && !isReview?
                           <Sendtaskbtn
-                            href={`${baseUrl}/school/search_content?exercise_id=${data.id}`}
+                            href={`${baseUrl}/school/search_content?exercise_id=${data.id}&exercise_page_number=${exercise_page_number}`}
                           />
                           :null
                           }
@@ -576,7 +578,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                            { data.user_type !== "School Student" && !isReview?
                           <div className="mt-3">
                             <Sendtaskbtn
-                            href={`${baseUrl}/school/search_content?exercise_id=${data.id}`}
+                            href={`${baseUrl}/school/search_content?exercise_id=${data.id}&exercise_page_number=${exercise_page_number}`}
                           />
                           </div>
                           :null
