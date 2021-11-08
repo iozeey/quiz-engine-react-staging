@@ -67,7 +67,7 @@ function ShowQuestions({
                   ? `<input type="text" className="form-control-sm" data-id ="${matched.match(
                       /\d+/
                     )}"  class="inline"/>`
-                  : question.type==="DragAndDrop" ?`<span type="text" className="form-control-sm" data-id ="${matched.match(
+                  : question.type==="DragAndDrop" ?`<span data-type="${question.type}" type="text" className="form-control-sm" data-id ="${matched.match(
                     /\d+/
                   )}"  ></span>`:`<select data-id ="${matched.match(
                       /\d+/
@@ -196,7 +196,7 @@ function ShowQuestions({
                             </div>
                           );
                         } 
-                        else if(node.name==="span"){
+                        else if(node && node.attribs && node.attribs["data-type"]==="DragAndDrop"){
                           
                          return <DragDrop/>
                         
