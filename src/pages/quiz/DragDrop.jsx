@@ -1,9 +1,7 @@
 import {
-  handleDragStart,
   handleOverDrop,
   handleDragEnterLeave,
 } from "./DragDropEvents";
-import { Answer } from "../../components/answers/badge/answer";
 export const DragDrop = () => {
   return (
             <div 

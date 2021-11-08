@@ -16,8 +16,6 @@ import { DragDrop } from "./DragDrop";
 import { SelectChoice } from "../../components/drop_down/SelectChoice";
 import {
   handleDragStart,
-  handleOverDrop,
-  handleDragEnterLeave,
 } from "./DragDropEvents";
 
 function ShowQuestions({
