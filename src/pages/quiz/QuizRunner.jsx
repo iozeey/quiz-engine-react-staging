@@ -251,13 +251,11 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
         }
       }
     }
-    console.log("answers", answers);
   };
 
   const { handleSubmit } = useForm();
 
   const onFormSubmit = () => {
-    console.log(speakingUrl);
     let answeredQuestion = [];
     let notAnswered = [];
     let ans = [];
@@ -308,6 +306,14 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
   };
   let params = (new URL(document.location)).searchParams;
   let exercise_page_number = params.get("exercise_page_number");
+  let show_exercises = params.get("show_exercises");
+  let search = params.get("search");
+  let student_content_type_choice = params.get("student_content_type_choice");
+  let student_level_choice = params.get("student_level_choice");
+  let exam_board_choice = params.get("exam_board_choice");
+  let student_theme_choice = params.get("student_theme_choice");
+  let student_function_choice = params.get("student_function_choice");
+  let student_grammar_choice = params.get("student_grammar_choice");
   if (!isLoaded)
     return (
       <div class="centered text-light fs-4">
@@ -551,7 +557,7 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                         <div className="text-end col-md-4 col-12">
                           { data.user_type !== "School Student" && !isReview?
                           <Sendtaskbtn
-                            href={`${baseUrl}/school/search_content?exercise_id=${data.id}&exercise_page_number=${exercise_page_number}`}
+                            href={`${baseUrl}/school/search_content?exercise_id=${data.id}&exercise_page_number=${exercise_page_number}&show_exercises=${show_exercises}&search=${search}&student_content_type_choice=${student_content_type_choice}&student_level_choice=${student_level_choice}&exam_board_choice=${exam_board_choice}&student_theme_choice=${student_theme_choice}&student_function_choice=${student_function_choice}&student_grammar_choice=${student_grammar_choice}`}
                           />
                           :null
                           }
@@ -578,8 +584,8 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                            { data.user_type !== "School Student" && !isReview?
                           <div className="mt-3">
                             <Sendtaskbtn
-                            href={`${baseUrl}/school/search_content?exercise_id=${data.id}&exercise_page_number=${exercise_page_number}`}
-                          />
+                            href={`${baseUrl}/school/search_content?exercise_id=${data.id}&exercise_page_number=${exercise_page_number}&show_exercises=${show_exercises}&search=${search}&student_content_type_choice=${student_content_type_choice}&student_level_choice=${student_level_choice}&exam_board_choice=${exam_board_choice}&student_theme_choice=${student_theme_choice}&student_function_choice=${student_function_choice}&student_grammar_choice=${student_grammar_choice}`}
+                            />
                           </div>
                           :null
                           }

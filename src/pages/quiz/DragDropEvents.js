@@ -8,7 +8,6 @@ export function handleDragEnterLeave(e) {
   }
 }
 export function handleOverDrop(e) {
-    console.log("target",e.target);
   let dataAttribute = e.target.getAttribute("data-box");
   e.preventDefault();
   if (dataAttribute !== null) {

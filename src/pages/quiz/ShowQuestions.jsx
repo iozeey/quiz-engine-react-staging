@@ -12,7 +12,13 @@ import ReactHtmlParser from "react-html-parser";
 import { isInUserSelectedAnswers } from "./QuizRunner.helpers";
 import { size } from "lodash";
 import { Answer } from "../../components/answers/badge/answer";
+import { DragDrop } from "./DragDrop";
 import { SelectChoice } from "../../components/drop_down/SelectChoice";
+import {
+  handleDragStart,
+  handleOverDrop,
+  handleDragEnterLeave,
+} from "./DragDropEvents";
 
 function ShowQuestions({
   questions,
@@ -63,7 +69,9 @@ function ShowQuestions({
                   ? `<input type="text" className="form-control-sm" data-id ="${matched.match(
                       /\d+/
                     )}"  class="inline"/>`
-                  : `<select data-id ="${matched.match(
+                  : question.type==="DragAndDrop" ?`<span type="text" className="form-control-sm" data-id ="${matched.match(
+                    /\d+/
+                  )}"  ></span>`:`<select data-id ="${matched.match(
                       /\d+/
                     )}"  class="inline"></select>`;
               }
@@ -71,6 +79,31 @@ function ShowQuestions({
 
             return (
               <div className="mb-3" key={qai}>
+                <div className="mb-3">
+                {
+                 question.type === "DragAndDrop"?
+                question.possible_answers.map((element,id)=>{
+                  return (
+                    <div
+                    id={`box${id}${qai}`}
+                    draggable="true"
+                    class="mb-3 me-1 inline"
+                    onDragStart={handleDragStart}
+                  >
+                    <Answer
+                      badgeclass="badge inline dotted-border customized-badge pading"
+                      value={element.prompt_content}
+                      data-box="box"
+                    />
+                  </div>
+                    
+                    
+                    )
+                })
+               : null
+                
+                }
+                </div>
                 <div className="icon-wrapper">
                   <Question
                     // counterClass={getCounterCls(converted)}
@@ -164,7 +197,13 @@ function ShowQuestions({
                               ) : null}
                             </div>
                           );
-                        } else if (node.name === "select") {
+                        } 
+                        else if(node.name==="span"){
+                          
+                         return <DragDrop/>
+                        
+                        }
+                        else if (node.name === "select") {
                           let user_answer;
                           answer.forEach((ans) => {
                             if (ans.question_id === question.id) {
