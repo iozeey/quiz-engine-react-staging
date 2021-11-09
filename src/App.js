@@ -46,8 +46,8 @@ const App = (props) => {
             setIsSubmitting(false);
             setIsLoaded(true);
             setItems(json);
-            if (json.task_type === "Speaking Task") {
-              window.location.replace(`${baseUrl}/student/assignments/`);
+            if (json.task_type === "Speaking Task"||json.task_type === "Writing Task") {
+              window.location.replace(`${baseUrl}/student/assignments?task_completed=true`);
             }
             if (json.is_show_feedback === false) {
               history.push("/stagging");

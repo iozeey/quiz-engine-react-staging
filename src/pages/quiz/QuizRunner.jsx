@@ -538,18 +538,12 @@ const QuizRunner = ({ isLoaded, data, onSubmit, isReview, isSubmitting }) => {
                       <div className="row">
                         <div className="col-md-8 col-12">
                           <div className="text-start col-md-4 col-12">
-                            {getStudentid ? (
-                              <Exitbtn
-                                href={`${baseUrl}/school/school_quiz_grading/${getStudentid}`}
-                              />
-                            ) : (
                               <Exitbtn
                                 onClick={(e) => {
                                   e.preventDefault();
                                   window.close();
                                 }}
                               />
-                            )}
                           </div>
                           
                         </div>
