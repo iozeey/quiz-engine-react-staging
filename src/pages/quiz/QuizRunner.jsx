@@ -23,7 +23,6 @@ import { ExerciseType } from "./../../components/heading/heading";
 import SimpleModal from "./../../components/modals/SimpleModal";
 import { includes } from "lodash";
 import { join } from "lodash";
-import { getStudentid } from "../../libs/api/quiz";
 import ConfirmationModal from "../../components/modals/ConfirmationModal";
 import { notify } from "../../components/notification/Notification";
 import QuestionDescription from "../../components/question/QuestionDescrption";
