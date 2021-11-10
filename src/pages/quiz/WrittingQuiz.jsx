@@ -26,6 +26,16 @@ import { Logo } from "./Logo";
 import { size } from "lodash";
 
 let answers;
+let params = (new URL(document.location)).searchParams;
+let exercise_page_number = params.get("exercise_page_number");
+let show_exercises = params.get("show_exercises");
+let search = params.get("search");
+let student_content_type_choice = params.get("student_content_type_choice");
+let student_level_choice = params.get("student_level_choice");
+let exam_board_choice = params.get("exam_board_choice");
+let student_theme_choice = params.get("student_theme_choice");
+let student_function_choice = params.get("student_function_choice");
+let student_grammar_choice = params.get("student_grammar_choice");
 
 const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
   const notify = () =>
@@ -328,8 +338,8 @@ const WrittingQuiz = ({ isLoaded, data, onSubmit, isReview }) => {
                         <div className="text-end col-6">
                           {data.user_type !=="School Student" ?
                         <Sendtaskbtn
-                              href={`${baseUrl}/school/search_content?exercise_id=${data.id}`}
-                            />:null}
+                        href={`${baseUrl}/school/search_content?exercise_id=${data.id}&exercise_page_number=${exercise_page_number}&show_exercises=${show_exercises}&search=${search}&student_content_type_choice=${student_content_type_choice}&student_level_choice=${student_level_choice}&exam_board_choice=${exam_board_choice}&student_theme_choice=${student_theme_choice}&student_function_choice=${student_function_choice}&student_grammar_choice=${student_grammar_choice}`}
+                        />:null}
                         </div>
                       </div>
                     ) : (
