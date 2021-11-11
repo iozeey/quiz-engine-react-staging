@@ -10,7 +10,7 @@ import { InputFiled } from "../../components/input_fields/input_field";
 import { WrongAnswer } from "../../components/answers/wrong_answer";
 import ReactHtmlParser from "react-html-parser";
 import { isInUserSelectedAnswers } from "./QuizRunner.helpers";
-import { size } from "lodash";
+import { shuffle, size } from "lodash";
 import { Answer } from "../../components/answers/badge/answer";
 import { DragDrop } from "./DragDrop";
 import { SelectChoice } from "../../components/drop_down/SelectChoice";
@@ -36,6 +36,7 @@ function ShowQuestions({
 
   let isShowNumbering = size(questions) > 1;
   let fieldNumber , fieldlenght = 0;
+
 
   return (
     <div>
@@ -242,7 +243,9 @@ function ShowQuestions({
                                 parseInt(node.attribs["data-id"]) ===
                                 user_selected.number
                               ) {
-                                question.possible_answers.forEach(
+                                (question.question_options_randomize === true ?
+                                  shuffle(question.possible_answers)
+                                  : question.possible_answers).forEach(
                                   (possible_answer) => {
                                     if (
                                       possible_answer.number ===
@@ -320,7 +323,13 @@ function ShowQuestions({
                           : null
                       }
                     >
-                      {question.possible_answers.map(
+                      
+                      
+                      {
+                      (question.question_options_randomize === true ?
+                      shuffle(question.possible_answers)
+                      : question.possible_answers)
+                      .map(
                         (possible_answers, pai) => (
                           <div
                             className={
