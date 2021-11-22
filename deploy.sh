@@ -4,9 +4,9 @@ rm -rf public/*
 rm -rf src/*
 rm -rf package.json
 
-cp ./../GradinglyFront/frontend/package.json ./
-cp -r ./../GradinglyFront/frontend/public/* ./public/
-cp -r ./../GradinglyFront/frontend/src/* ./src/
+cp /Users/macbook/w/c/aleem/GradinglyFront/frontend/package.json ./
+cp -r /Users/macbook/w/c/aleem/GradinglyFront/frontend/public/* ./public/
+cp -r /Users/macbook/w/c/aleem/GradinglyFront/frontend/src/* ./src/
 echo "---Deployment begin---";
 start=`date +%s`
 # nvm use 12.18
